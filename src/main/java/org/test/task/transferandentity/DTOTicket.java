@@ -1,24 +1,22 @@
 package org.test.task.transferandentity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class DTOTicker {
-    private final String origin;
-    private final String origin_name;
-    private final String destination;
-    private final String destination_name;
-    private final String departure_date;
-    private final String departure_time;
-    private final String arrival_date;
-    private final String arrival_time;
-    private final String carrier;
-    private final Integer stops;
-    private final Integer price;
+public class DTOTicket {
+    private String origin;
+    private String origin_name;
+    private String destination;
+    private String destination_name;
+    private String departure_date;
+    private String departure_time;
+    private String arrival_date;
+    private String arrival_time;
+    private String carrier;
+    private Integer stops;
+    private Integer price;
 }

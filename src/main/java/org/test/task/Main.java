@@ -1,19 +1,53 @@
 package org.test.task;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.test.task.transferandentity.DTOList;
+import org.test.task.transferandentity.DTOTicket;
+import org.test.task.transferandentity.EntityTicket;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Main {
-    public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+    public static void main(String[] args) throws IOException {
+        Main main = new Main();
+        main.countAll();
+    }
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+    private void countAll() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
 
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
-        }
+        //Pre downloaded file
+        File file = new File("tickets.json");
+        List<DTOTicket> tickets = mapper.readValue(file, DTOList.class).getTickets();
+
+        tickets.stream().map(e -> EntityTicket.builder()
+                .arrival(LocalDateTime.parse(String.format("%5s", e.getArrival_time()).replace(" ", "0") + " " + e.getArrival_date(), formatter))
+                .departure(LocalDateTime.parse(String.format("%5s", e.getDeparture_time()).replace(" ", "0") + " " + e.getDeparture_date(), formatter))
+                .carrier(e.getCarrier())
+                .build())
+                .collect(Collectors.groupingBy(EntityTicket::getCarrier))
+                .values()
+                .forEach(e -> System.out.println("Перевозчик: " + e.get(0).getCarrier()
+                        + " время перелёта: "
+                        + e.stream()
+                        .min(Comparator.comparing(f -> Duration.between(f.getDeparture(), f.getArrival())))
+                        .map(f -> Duration.between(f.getDeparture(), f.getArrival()))
+                        .get()
+                        .toString()
+                        .substring(2)
+                        .replace("H", "ч ")
+                        .replace("M", "м ")));
+
+        tickets.sort(Comparator.comparing(DTOTicket::getPrice));
+        System.out.print("Медианная цена: " + tickets.get(tickets.size()/2).getPrice());
+        System.out.print(", средняя: " + tickets.stream().mapToInt(DTOTicket::getPrice).average().getAsDouble());
     }
 }
