@@ -17,20 +17,30 @@ import java.util.stream.Collectors;
 public class Main {
     public static void main(String[] args) throws IOException {
         Main main = new Main();
-        main.countAll();
+
+        /*
+        Для простоты прописал литералами
+         */
+        main.countAll("tickets.json");
     }
 
-    private void countAll() throws IOException {
+    private void countAll(String path) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
 
         //Pre downloaded file
-        File file = new File("tickets.json");
-        List<DTOTicket> tickets = mapper.readValue(file, DTOList.class).getTickets();
+        File file = new File(path);
+        List<DTOTicket> tickets = mapper.readValue(file, DTOList.class).getTickets()
+                .stream()
+                .filter(e -> e.getDestination_name().equals("Тель-Авив") && e.getOrigin_name().equals("Владивосток"))
+                .collect(Collectors.toList());
 
-        tickets.stream().map(e -> EntityTicket.builder()
-                .arrival(LocalDateTime.parse(String.format("%5s", e.getArrival_time()).replace(" ", "0") + " " + e.getArrival_date(), formatter))
-                .departure(LocalDateTime.parse(String.format("%5s", e.getDeparture_time()).replace(" ", "0") + " " + e.getDeparture_date(), formatter))
+        tickets.stream()
+                .map(e -> EntityTicket.builder()
+                .arrival(LocalDateTime.parse(String.format("%5s", e.getArrival_time())
+                        .replace(" ", "0") + " " + e.getArrival_date(), formatter))
+                .departure(LocalDateTime.parse(String.format("%5s", e.getDeparture_time())
+                        .replace(" ", "0") + " " + e.getDeparture_date(), formatter))
                 .carrier(e.getCarrier())
                 .build())
                 .collect(Collectors.groupingBy(EntityTicket::getCarrier))
@@ -47,7 +57,9 @@ public class Main {
                         .replace("M", "м ")));
 
         tickets.sort(Comparator.comparing(DTOTicket::getPrice));
-        System.out.print("Медианная цена: " + tickets.get(tickets.size()/2).getPrice());
-        System.out.print(", средняя: " + tickets.stream().mapToInt(DTOTicket::getPrice).average().getAsDouble());
+        System.out.printf("Медианная цена: %.2f", ((tickets.size() % 2 == 1)
+                ? tickets.get(tickets.size() / 2).getPrice()
+                : (tickets.get(tickets.size() / 2).getPrice() + tickets.get(tickets.size() / 2 - 1).getPrice()) / 2.0));
+        System.out.printf(" средняя: %.2f", tickets.stream().mapToInt(DTOTicket::getPrice).average().getAsDouble());
     }
 }
