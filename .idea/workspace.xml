@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="cc469da5-cef8-4c38-b831-6e21b2dbdacf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/test/task/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/test/task/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +114,7 @@
       <option name="presentableId" value="Default" />
       <updated>1715164420828</updated>
       <workItem from="1715164421940" duration="9595000" />
-      <workItem from="1715182316419" duration="1387000" />
+      <workItem from="1715182316419" duration="1736000" />
     </task>
     <task id="LOCAL-00001" summary="forget 1 file">
       <option name="closed" value="true" />
@@ -133,7 +132,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715173992150</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="oops">
+      <option name="closed" value="true" />
+      <created>1715183808703</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1715183808703</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -141,6 +148,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="forget 1 file" />
-    <option name="LAST_COMMIT_MESSAGE" value="forget 1 file" />
+    <MESSAGE value="oops" />
+    <option name="LAST_COMMIT_MESSAGE" value="oops" />
   </component>
 </project>

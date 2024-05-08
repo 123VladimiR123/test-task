@@ -57,9 +57,14 @@ public class Main {
                         .replace("M", "м ")));
 
         tickets.sort(Comparator.comparing(DTOTicket::getPrice));
-        System.out.printf("Медианная цена: %.2f", ((tickets.size() % 2 == 1)
+
+        double med = ((tickets.size() % 2 == 1)
                 ? tickets.get(tickets.size() / 2).getPrice()
-                : (tickets.get(tickets.size() / 2).getPrice() + tickets.get(tickets.size() / 2 - 1).getPrice()) / 2.0));
-        System.out.printf(" средняя: %.2f", tickets.stream().mapToInt(DTOTicket::getPrice).average().getAsDouble());
+                : (tickets.get(tickets.size() / 2).getPrice() + tickets.get(tickets.size() / 2 - 1).getPrice()) / 2.0);
+        double aver = tickets.stream().mapToInt(DTOTicket::getPrice).average().getAsDouble();
+
+        System.out.printf("Медианная цена: %.2f", med);
+        System.out.printf(" средняя: %.2f", aver);
+        System.out.printf("\nРазница %.2f", Math.abs(med - aver));
     }
 }
